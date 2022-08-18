@@ -1,5 +1,6 @@
-const content = document.createElement('div');
-content.innerText = "Hello";
-content.setAttribute('id', 'content');
+import './style.css';
+import Init from './pages/init.js'
 
-document.body.appendChild(content);
+
+Init();
+
