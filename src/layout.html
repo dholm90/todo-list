@@ -35,6 +35,17 @@
                     <div class="right">
                         <p class="date">No date</p>
                     </div>
+                    <p class="delete">x</p>
+                </article>
+                <article>
+                    <div class="left">
+                        <h3 class="title">Title</h3>
+                        <p class="desc">Description</p>
+                    </div>
+                    <div class="right">  
+                        <p class="date">No date</p>
+                    </div>
+                    <p class="delete">x</p>
                 </article>
                 <article>
                     <div class="left">
@@ -44,19 +55,23 @@
                     <div class="right">
                         <p class="date">No date</p>
                     </div>
-                </article>
-                <article>
-                    <div class="left">
-                        <h3 class="title">Title</h3>
-                        <p class="desc">Description</p>
-                    </div>
-                    <div class="right">
-                        <p class="date">No date</p>
-                    </div>
+                    <p class="delete">x</p>
                 </article>
                 
             </section>
-            <button class="addList">+ New Item</button>
+            <section class="inputForm">
+                <div class="top">
+                    <input type="text" name="inputTitle" id="inputTitle" placeholder="Title">
+                    <input type="date" name="inputDate" id="inputDate" >
+                </div>
+                
+                <textarea name="inputDesc" id="inputDesc" rows="10" placeholder="Description"></textarea>
+                <div class="bottom">
+                    <button id="addItem">Add</button>
+                    <button id="cancel">Cancel</button>
+                </div>
+            </section>
+            <button class="newItem">+ New Item</button>
         </main>
         <footer><h4>Copyright Devan Holm</h4></footer>
     </div>
