@@ -58,7 +58,7 @@ aside {
     flex-direction: column;
     gap: 1rem;
     background-color: var(--silver);
-    padding: 2rem 4rem 0 2rem;
+    padding: 2rem 4rem 2rem 2rem;
     color: var(--darkblue);
 }
 
@@ -69,32 +69,43 @@ aside h2 {
 }
 
 aside ul {
-    padding: 0.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     color: var(--darkblue)
 }
 
-aside ul li {
+.project {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
     font-size: 1.5rem;
     cursor: pointer;
-    padding: 0.5rem;
-}
-
-aside ul li:hover {
     background-color: var(--white);
 }
 
+.project:hover {
+    background-color: var(--gray);
+}
+
+.project svg {
+    color: var(--red);
+}
+
+.project svg:hover {
+    color: var(--darkred);
+}
+
 .selected {
-    background-color: var(--babyblue);
-    color: var(--darkblue);
+    background-color: var(--darkblue);
+    color: var(--white);
 
 }
 
 .addProject {
     border: none;
-    background-color: var(--green);
+    background-color: var(--babyblue);
     border: 1px solid var(--darkblue);
     color: var(--darkblue);
     padding: 0.5rem 1rem;
@@ -104,7 +115,8 @@ aside ul li:hover {
 }
 
 .addProject:hover {
-    background-color: var(--darkgreen);
+    background-color: var(--darkblue);
+    color: var(--white);
 }
 
 main {
@@ -148,7 +160,7 @@ main h2 {
 article {
     background-color: white;
     /* border: 1px solid var(--darkblue); */
-    border-radius: 1rem;
+
     padding: 1rem;
     display: flex;
     justify-content: space-between;
@@ -160,25 +172,20 @@ article {
     position: absolute;
     top: 0.2rem;
     right: 0.2rem;
-    padding: 0.1rem;
-    width: 1.25rem;
-    height: 1.25rem;
+    color: var(--red);
     display: flex;
     justify-content: center;
-    border: 1px solid var(--darkblue);
-    background-color: var(--red);
     font-weight: 900;
     cursor: pointer;
-    color: var(--white);
-    border-radius: 1rem;
+
 }
 
 .delete:hover {
-    background-color: var(--darkred);
+    color: var(--darkred);
 }
 
 .selected:hover {
-    background-color: var(--babyblue);
+    background-color: var(--darkblue);
 
 }
 
@@ -209,7 +216,8 @@ article .left {
     justify-content: space-between;
 }
 
-#inputTitle {
+#inputTitle,
+#newProjectName {
     padding: 0.5rem;
     border: 1px solid var(--darkblue);
     font-size: 1.25rem;
@@ -224,16 +232,19 @@ article .left {
     font-weight: 600;
 }
 
-.bottom {
+.bottom,
+.projectButtons {
     display: flex;
     flex-direction: row;
     gap: 1rem;
 }
 
-.bottom button {
+.bottom button,
+.add,
+.cancel {
     width: 50%;
     border: 1px solid var(--darkblue);
-    background-color: var(--babyblue);
+    /* background-color: var(--babyblue); */
     color: var(--darkblue);
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -242,22 +253,23 @@ article .left {
 
 }
 
-#addItem {
+.add {
     background-color: var(--green);
     color: var(--darkblue);
 }
 
-#addItem:hover {
-    background-color: var(--darkgreen);
-}
-
-#cancel {
-    background-color: var(--red);
+.add:hover {
+    background-color: var(--darkblue);
     color: var(--white);
 }
 
-#cancel:hover {
-    background-color: var(--darkred);
+.cancel {
+    background-color: var(--red);
+}
+
+.cancel:hover {
+    background-color: var(--darkblue);
+    color: var(--white);
 }
 
 footer {
