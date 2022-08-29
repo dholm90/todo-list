@@ -1,9 +1,9 @@
 export default class Task {
-    constructor(title, desc, dueDate, priority) {
+    constructor(title, desc, dueDate) {
         this.title = title;
         this.desc = desc;
         this.dueDate = dueDate;
-        this.priority = priority;
+
     }
     setName(name) {
         this.name = name;
@@ -23,12 +23,7 @@ export default class Task {
     getDate() {
         return this.dueDate;
     }
-    setPriority(priority) {
-        this.priority = priority;
-    }
-    getPriority() {
-        return this.priority;
-    }
+
 
     getDateFormatted() {
         const day = this.dueDate.split('/')[0]
