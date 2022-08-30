@@ -96,7 +96,8 @@ aside ul {
 }
 
 .project svg {
-    color: var(--red);
+    background-color: var(--red);
+    border-radius: 2rem;
 }
 
 .project svg:hover {

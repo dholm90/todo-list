@@ -4,9 +4,8 @@ import Project from "./projects.js";
 export default class TodoList {
     constructor() {
         this.projects = []
-        this.projects.push(new Project('Project 1'));
-        this.projects.push(new Project('Project 2'));
-        this.projects.push(new Project('Project 3'));
+        this.projects.push(new Project('Default List'));
+
     }
 
     setProjects(projects) {
@@ -33,8 +32,8 @@ export default class TodoList {
         this.projects.push(newProject);
     }
 
-    deleteProject() {
+    deleteProject(projectName) {
         const projectToDelete = this.projects.find((project) => project.getName() === projectName);
-        this.projects.splice(this.projects.indexOf(projectToDelete));
+        this.projects.splice(this.projects.indexOf(projectToDelete), 1);
     }
 }
