@@ -13,20 +13,22 @@ export default class Interface {
             .forEach((project) => {
                 this.createProject(project.name);
             })
+        // Interface.createProject(project.name);
     }
 
     static loadTasks(projectName) {
         Storage.getTodoList()
             .getProject(projectName)
             .getTasks()
-            .forEach((task) => this.createTask(task.name, task.desc, task.dueDate));
+            .forEach((task) => Interface.createTask(task.name, task.desc, task.dueDate));
 
         Interface.initAddTaskButton();
+
     }
 
     static createProject(name) {
         const ul = document.querySelector('#project-list');
-        ul.innerHTML += `<button class="project" data-project-button>
+        ul.innerHTML += `<button type='button' class="project">
             <li>${name}</li>
             <svg class="delete-project" style="width:24px;height:24px" viewBox="0 0 24 24">
                 
@@ -77,11 +79,24 @@ export default class Interface {
     static loadProjectContent(projectName) {
         const main = document.querySelector('main');
         main.innerHTML = `<h2 class="projectHeader">${projectName}</h2>`;
+        main.innerHTML += `<section class="list-grid"></section>`
+        main.innerHTML += `<section class="inputForm">
+        <div class="top">
+            <input type="text" name="inputTitle" id="inputTitle" placeholder="Title">
+            <input type="date" name="inputDate" id="inputDate" >
+        </div>
+        
+        <textarea name="inputDesc" id="inputDesc" rows="10" placeholder="Description"></textarea>
+        <div class="bottom">
+            <button class="addList" id="addList">Add</button>
+            <button class="cancelList" id="cancelList">Cancel</button>
+        </div>
+    </section>`
+
+        Interface.loadTasks(projectName);
 
 
-        this.loadTasks(projectName);
-        this.loadListGrid(main);
-        this.loadForm(main);
+
     }
 
     static addProject() {
@@ -101,82 +116,10 @@ export default class Interface {
 
         Storage.addProject(new Project(projectName));
         Interface.createProject(projectName);
-        console.log(projectName);
-    }
-
-    static loadListGrid(main) {
-        const listGrid = document.createElement('section');
-        listGrid.classList.add('list-grid');
-        main.appendChild(listGrid);
-    }
-
-    static loadForm(main) {
-        const inputForm = document.createElement('section');
-        inputForm.classList.add('inputForm');
-        inputForm.classList.add('hide');
-
-        const top = document.createElement('div');
-        top.classList.add('top');
-
-        const inputTitle = document.createElement('input');
-        const titleAttributes = {
-            type: 'text',
-            name: 'inputTitle',
-            id: 'inputTitle',
-            placeholder: 'Title',
-        };
-        this.setAttributes(inputTitle, titleAttributes);
-
-        const inputDate = document.createElement('input');
-        const dateAttributes = {
-            type: 'date',
-            name: 'inputDate',
-            id: 'inputDate',
-        };
-        this.setAttributes(inputDate, dateAttributes);
-
-        const inputDesc = document.createElement('textarea');
-        const descAttributes = {
-            name: 'inputDesc',
-            id: 'inputDesc',
-            rows: '10',
-            placeholder: 'Description',
-        };
-        this.setAttributes(inputDesc, descAttributes);
-
-        const bottom = document.createElement('div');
-        bottom.classList.add('bottom');
-
-        const addList = document.createElement('button');
-        addList.classList.add('add');
-        addList.setAttribute('id', 'addList');
-        addList.innerText = "Add";
-        // addList.addEventListener('click', Interface.addTask());
-
-
-        const cancelList = document.createElement('button');
-        cancelList.classList.add('cancel');
-        cancelList.setAttribute('id', 'cancelList');
-        cancelList.innerText = "Cancel";
-
-        main.appendChild(inputForm);
-        inputForm.appendChild(top);
-        top.appendChild(inputTitle);
-        top.appendChild(inputDate);
-        inputForm.appendChild(inputDesc);
-        inputForm.appendChild(bottom);
-        bottom.appendChild(addList);
-        bottom.appendChild(cancelList);
-
-        // Form Toggle
-        const newItem = document.createElement('button');
-        newItem.classList.add('newItem');
-        newItem.innerText = '+ New Item';
-        main.appendChild(newItem);
-
-        this.toggleForm(inputForm, newItem, cancelList, true);
+        projectInput.value = '';
 
     }
+
 
     static initProjectButtons() {
         const projectButtons = document.querySelectorAll('.project');
@@ -217,8 +160,9 @@ export default class Interface {
     }
 
     static initAddTaskButton() {
-        const addButton = document.querySelector('#addList');
-        addButton.addEventListener('click', Interface.addTask());
+        const addListButton = document.getElementById('addList');
+        const newItem = document.querySelector('.newItem');
+        addListButton.addEventListener('click', Interface.addTask);
     }
 
     static initTaskButtons() {
@@ -226,8 +170,9 @@ export default class Interface {
         const taskButtons = document.querySelectorAll('.delete');
 
         taskButtons.forEach((taskButton) =>
-            taskButton.addEventListener('click', Interface.handleTaskButton())
+            taskButton.addEventListener('click', Interface.handleTaskButton)
         )
+
     }
 
     static handleTaskButton() {
@@ -236,7 +181,7 @@ export default class Interface {
     }
 
     static deleteTask(taskButton) {
-        const projectName = document.querySelector('.projectHeader');
+        const projectName = document.querySelector('.projectHeader').textContent;
         const taskName = taskButton.parentNode.children[0].children[0].textContent;
 
         Storage.deleteTask(projectName, taskName);
@@ -246,26 +191,37 @@ export default class Interface {
 
     static addTask() {
         const projectName = document.querySelector('.projectHeader').textContent;
-        const addTaskInput = document.getElementById('inputTitle');
-        const addDescInput = document.getElementById('inputDesc');
-        const addDateInput = document.getElementById('inputDate');
+        const taskName = document.getElementById('inputTitle');
+        const taskDesc = document.getElementById('inputDesc');
+        const taskDate = document.getElementById('inputDate');
 
 
-        const taskName = addTaskInput.value;
-        const taskDesc = addDescInput.value;
-        const taskDate = addDateInput.value;
 
-
-        if (taskName === '') {
+        if (taskName.value === '' || taskDesc.value === '' || taskDate.value === '') {
             alert('Fields cannot be empty')
             return
         }
 
-        Storage.addTask(projectName, new Task(taskName));
-        Interface.createTask(taskName);
+        if (Storage.getTodoList().getProject(projectName).contains(taskName.value)) {
+            alert('Task names must be different');
+            Interface.resetInput();
+            return
+        }
 
+        Storage.addTask(projectName, new Task(taskName.value, taskDesc.value, taskDate.value));
+        Interface.createTask(taskName.value, taskDesc.value, taskDate.value);
+        Interface.resetInput()
 
+    }
 
+    static resetInput() {
+        const taskName = document.getElementById('inputTitle');
+        const taskDesc = document.getElementById('inputDesc');
+        const taskDate = document.getElementById('inputDate');
+
+        taskName.value = '';
+        taskDesc.value = '';
+        taskDate.value = '';
     }
 
 
@@ -278,15 +234,15 @@ export default class Interface {
             element.classList.remove('hide');
             button.classList.add('hide');
 
+
         })
         cancelButton.addEventListener('click', () => {
             element.classList.add('hide');
             button.classList.remove('hide');
-            // if (bool) {
-            //     Interface.initAddTaskButton();
-            // }
+
 
         })
+
     }
     static setAttributes(element, attributes) {
         Object.keys(attributes).forEach(attr => {
@@ -341,11 +297,11 @@ export default class Interface {
         projectName.setAttribute('id', 'newProjectName');
 
         projectButtons.classList.add('projectButtons');
+        addButton.addEventListener('click', Interface.addProject);
 
         addButton.classList.add('add');
         addButton.innerText = 'Add';
 
-        addButton.addEventListener('click', Interface.addProject);
 
         cancelButton.classList.add('cancel');
         cancelButton.innerText = 'Cancel';
@@ -372,11 +328,6 @@ export default class Interface {
         const content = document.querySelector('#content');
         const main = document.createElement('main');
 
-        // List Items
-        const listGrid = document.createElement('section');
-        listGrid.classList.add('list-grid');
-
-        main.appendChild(listGrid);
 
         return content.appendChild(main);
     }
@@ -391,8 +342,6 @@ export default class Interface {
 
     }
     static loadPage() {
-
-
         this.createContentWrapper();
         this.createHeader();
         this.createSidebar();
@@ -400,9 +349,6 @@ export default class Interface {
         this.createFooter();
         this.loadProjects();
         this.initProjectButtons();
-        // this.createTask('name', 'desc', 'date');
         this.initTaskButtons();
-        // this.loadTasks();
-
     }
 }

@@ -258,7 +258,9 @@ article .left {
 
 .bottom button,
 .add,
-.cancel {
+.cancel,
+.addList,
+.cancelList {
     width: 50%;
     border: 1px solid var(--darkblue);
     /* background-color: var(--babyblue); */
@@ -270,21 +272,25 @@ article .left {
 
 }
 
-.add {
+.add,
+.addList {
     background-color: var(--green);
     color: var(--darkblue);
 }
 
-.add:hover {
+.add:hover,
+.addList:hover {
     background-color: var(--darkblue);
     color: var(--white);
 }
 
-.cancel {
+.cancel,
+.cancelList {
     background-color: var(--red);
 }
 
-.cancel:hover {
+.cancel:hover,
+.cancelList:hover {
     background-color: var(--darkblue);
     color: var(--white);
 }
